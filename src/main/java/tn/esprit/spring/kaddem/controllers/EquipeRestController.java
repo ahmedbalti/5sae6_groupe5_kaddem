@@ -1,6 +1,8 @@
 package tn.esprit.spring.kaddem.controllers;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/equipe")
 public class EquipeRestController {
+
+
 	IEquipeService equipeService;
 	// http://localhost:8089/Kaddem/equipe/retrieve-all-equipes
 	@GetMapping("/retrieve-all-equipes")
@@ -20,6 +24,17 @@ public class EquipeRestController {
 		List<Equipe> listEquipes = equipeService.retrieveAllEquipes();
 		return listEquipes;
 	}
+
+	private static final Logger logger = LoggerFactory.getLogger(EquipeRestController.class);
+
+	@GetMapping("/sample")
+	public String sampleEndpoint() {
+		logger.info("Ceci est un message INFO depuis le contrôleur.");
+		logger.debug("Ceci est un message DEBUG depuis le contrôleur.");
+		logger.error("Ceci est un message d'erreur depuis le contrôleur.");
+		return "sample";
+	}
+
 	// http://localhost:8089/Kaddem/equipe/retrieve-equipe/8
 	@GetMapping("/retrieve-equipe/{equipe-id}")
 	public Equipe retrieveEquipe(@PathVariable("equipe-id") Integer equipeId) {

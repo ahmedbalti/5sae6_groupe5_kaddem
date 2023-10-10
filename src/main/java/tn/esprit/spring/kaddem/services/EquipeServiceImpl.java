@@ -13,12 +13,17 @@ import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Slf4j
 @AllArgsConstructor
 @Service
 public class EquipeServiceImpl implements IEquipeService{
 	EquipeRepository equipeRepository;
+
+
+	private static final Logger logger = LogManager.getLogger(Equipe.class);
 
 
 	public List<Equipe> retrieveAllEquipes(){
@@ -79,4 +84,22 @@ public class EquipeServiceImpl implements IEquipeService{
 		}
 
 	}
+
+	public void someServiceMethod() {
+		// Log d'une information
+		logger.info("Un message d'information depuis le service.");
+
+		// Log d'un message de débogage
+		logger.debug("Un message de débogage depuis le service.");
+
+		// Log d'une erreur avec une exception
+		try {
+			// Code susceptible de générer une exception
+		} catch (Exception e) {
+			logger.error("Une erreur s'est produite dans le service.", e);
+		}
+	}
+
+	// ...
 }
+
