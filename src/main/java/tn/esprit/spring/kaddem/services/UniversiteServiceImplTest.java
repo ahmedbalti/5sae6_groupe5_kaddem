@@ -102,6 +102,6 @@ public class UniversiteServiceImplTest {
         // Vérifiez que la méthode a été appelée avec l'ID correct.
         verify(universiteRepository, times(1)).delete(universite);
     }
-    
+
 }
 
