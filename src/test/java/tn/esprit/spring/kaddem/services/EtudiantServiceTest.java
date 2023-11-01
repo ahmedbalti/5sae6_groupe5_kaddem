@@ -9,7 +9,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import tn.esprit.spring.kaddem.entities.Etudiant;
 import tn.esprit.spring.kaddem.repositories.EtudiantRepository;
-import tn.esprit.spring.kaddem.services.EtudiantServiceImpl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class EtudiantServiceTest {
