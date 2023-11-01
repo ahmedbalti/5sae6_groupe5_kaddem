@@ -117,12 +117,6 @@
     </build>
 
 
-    <distributionManagement>
-        <repository>
-            <id>5sae6_groupe5_kaddem</id>
-            <url>http://192.168.33.10:8081/repository/5sae6_groupe5_kaddem</url>
-        </repository>
-    </distributionManagement>
-
+    
 
 </project>
