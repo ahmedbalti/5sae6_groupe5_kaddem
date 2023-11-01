@@ -39,12 +39,38 @@ pipeline {
         stage("publish to nexus") {
             steps {
                 script {
-                  withCredentials([usernamePassword(credentialsId: 'nexusCredential', usernameVariable: 'admin', passwordVariable: 'nexus')]) {
-                                          // Use NEXUS_USERNAME and NEXUS_PASSWORD to authenticate and publish artifacts
-                 sh "mvn deploy:deploy-file -Durl=http://192.168.33.10:8081/repository/5sae6_groupe5_kaddem -DrepositoryId=nexus-repo -DgroupId=tn.esprit.spring -DartifactId=kaddem -Dversion=1 -Dpackaging=jar -Dfile=target/kaddem-0.0.1-SNAPSHOT.jar -DgeneratePom=false"
+                   // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+                    pom = readMavenPom file: "pom.xml";
+                    // Find built artifact under target folder
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    // Print some info from the artifact found
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    // Extra ct the path from the File found
+                    artifactPath = filesByGlob[0].path;
+                    // Assign to a boolean response verifying If the artifact name exists
+                    artifactExists = fileExists artifactPath;
 
+                    if(artifactExists) {
+                        echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.groupId,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                // Artifact generated such as .jar, .ear and .war files.
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging]
+                            ]
+                        );
 
+                    } else {
+                        error "* File: ${artifactPath}, could not be found";
                     }
                 }
             }
