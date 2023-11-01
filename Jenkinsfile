@@ -16,14 +16,14 @@ pipeline {
         NEXUS_REPOSITORY = "5sae6_groupe5_kaddem"
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexusCredential"
-       
+
     }
 
     stages {
         stage("Check out") {
             steps {
                 script {
-                    git branch: 'feature/nexusUpload', url: 'https://github.com/ahmedbalti/5sae6_groupe5_kaddem.git';
+                    git branch: 'IkramBargaoui-5SAE6-G5-Kaddem', url: 'https://github.com/ahmedbalti/5sae6_groupe5_kaddem.git';
                 }
             }
         }
