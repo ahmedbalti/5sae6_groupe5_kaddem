@@ -16,7 +16,7 @@ pipeline {
         NEXUS_REPOSITORY = "5sae6_groupe5_kaddem"
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexusCredential"
-        
+
     }
 
     stages {
@@ -39,16 +39,11 @@ pipeline {
         stage("publish to nexus") {
             steps {
                 script {
-                    // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
-                    pom = readMavenPom file: "pom.xml";
-                    // Find built artifact under target folder
-                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    // Print some info from the artifact found
-                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                    // Extract the path from the File found
-                    artifactPath = filesByGlob[0].path;
-                    // Assign to a boolean response verifying If the artifact name exists
-                    artifactExists = fileExists artifactPath;
+                  
+                withCredentials([usernamePassword(credentialsId: 'nexusCredential', usernameVariable: 'admin', passwordVariable: 'nexus')]) {
+             // Use NEXUS_USERNAME and NEXUS_PASSWORD to authenticate and publish artifacts
+             sh "mvn deploy:deploy-file -Durl=http://192.168.33.10:8081/repository/5sae6_groupe5_kaddem -DrepositoryId=nexus-repo -DgroupId=tn.esprit.spring -DartifactId=kaddem -Dversion=1 -Dpackaging=jar -Dfile=target/kaddem-0.0.1-SNAPSHOT.jar -DgeneratePom=false"
+
 
                     if(artifactExists) {
                         echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
