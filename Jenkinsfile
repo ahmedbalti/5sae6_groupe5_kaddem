@@ -16,6 +16,7 @@ pipeline {
         NEXUS_REPOSITORY = "5sae6_groupe5_kaddem"
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexusCredential"
+        ARTIFACT_VERSION = "${BUILD_NUMBER}"
 
     }
 
