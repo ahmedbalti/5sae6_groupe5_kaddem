@@ -23,7 +23,7 @@ pipeline {
         stage("Check out") {
             steps {
                 script {
-                    git branch: 'feature/nexusUpload', url: 'https://github.com/ahmedbalti/5sae6_groupe5_kaddem.git';
+                    git branch: 'BaltiAhmed_5sae6_groupe5', url: 'https://github.com/ahmedbalti/5sae6_groupe5_kaddem.git';
                 }
             }
         }
