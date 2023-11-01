@@ -39,33 +39,12 @@ pipeline {
         stage("publish to nexus") {
             steps {
                 script {
-                  
-                withCredentials([usernamePassword(credentialsId: 'nexusCredential', usernameVariable: 'admin', passwordVariable: 'nexus')]) {
-             // Use NEXUS_USERNAME and NEXUS_PASSWORD to authenticate and publish artifacts
-             sh "mvn deploy:deploy-file -Durl=http://192.168.33.10:8081/repository/5sae6_groupe5_kaddem -DrepositoryId=nexus-repo -DgroupId=tn.esprit.spring -DartifactId=kaddem -Dversion=1 -Dpackaging=jar -Dfile=target/kaddem-0.0.1-SNAPSHOT.jar -DgeneratePom=false"
+                  withCredentials([usernamePassword(credentialsId: 'nexusCredential', usernameVariable: 'admin', passwordVariable: 'nexus')]) {
+                                          // Use NEXUS_USERNAME and NEXUS_PASSWORD to authenticate and publish artifacts
+                 sh "mvn deploy:deploy-file -Durl=http://192.168.33.10:8081/repository/5sae6_groupe5_kaddem -DrepositoryId=nexus-repo -DgroupId=tn.esprit.spring -DartifactId=kaddem -Dversion=1 -Dpackaging=jar -Dfile=target/kaddem-0.0.1-SNAPSHOT.jar -DgeneratePom=false"
 
 
-                    if(artifactExists) {
-                        echo "* File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
 
-                        nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            groupId: pom.groupId,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
-                            artifacts: [
-                                // Artifact generated such as .jar, .ear and .war files.
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: artifactPath,
-                                type: pom.packaging]
-                            ]
-                        );
-
-                    } else {
-                        error "* File: ${artifactPath}, could not be found";
                     }
                 }
             }
