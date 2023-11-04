@@ -7,7 +7,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
-import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
