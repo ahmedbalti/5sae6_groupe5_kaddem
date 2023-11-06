@@ -1,4 +1,4 @@
-package tn.esprit.spring.kaddem.services;
+package tn.esprit.spring.kaddem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,12 +7,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
+import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest
 public class EquipeServiceImplTest {

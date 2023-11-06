@@ -83,6 +83,10 @@
             <artifactId>spring-test</artifactId>
             <version>5.3.28</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -99,6 +103,11 @@
                         </exclude>
                     </excludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.8.0.2131</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -136,27 +145,5 @@
 
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- Configuration de SonarQube -->
-                <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-                <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-                <!-- Autres propriétés de configuration SonarQube -->
-            </properties>
-        </profile>
-    </profiles>
-
-
-
-
-
-
-
 
 </project>
