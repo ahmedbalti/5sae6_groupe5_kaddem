@@ -1,105 +1,69 @@
 package tn.esprit.spring.kaddem;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import tn.esprit.spring.kaddem.entities.Equipe;
 import tn.esprit.spring.kaddem.entities.Niveau;
 import tn.esprit.spring.kaddem.repositories.EquipeRepository;
 import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-
-@SpringBootTest
 public class EquipeServiceImplTest {
 
-    @Autowired
+    @InjectMocks
     private EquipeServiceImpl equipeService;
 
-    @MockBean
+    @Mock
     private EquipeRepository equipeRepository;
 
-    @Test
-    public void testRetrieveAllEquipes() {
-        // Créez une liste simulée d'équipes
-        List<Equipe> equipesSimulees = new ArrayList<>();
-        equipesSimulees.add(new Equipe(1, "Equipe 1", Niveau.JUNIOR));
-        equipesSimulees.add(new Equipe(2, "Equipe 2", Niveau.SENIOR));
-        // Ajoutez d'autres équipes simulées au besoin
-
-        // Configurez le comportement simulé du repository
-        when(equipeRepository.findAll()).thenReturn(equipesSimulees);
-
-        // Appelez la méthode de service à tester
-        List<Equipe> equipes = equipeService.retrieveAllEquipes();
-
-        // Vérifiez le résultat avec des assertions
-        assertNotNull(equipes);
-        assertEquals(2, equipes.size()); // Vérifiez le nombre d'équipes simulées
-
-        // Effectuez d'autres assertions selon le comportement attendu
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
     public void testAddEquipe() {
-        // Créez une équipe simulée
-        Equipe equipeSimulee = new Equipe(1, "Equipe Test", Niveau.JUNIOR);
+        Equipe equipeToAdd = new Equipe("Equipe de Test");
+        when(equipeRepository.save(equipeToAdd)).thenReturn(equipeToAdd);
 
-        // Configurez le comportement simulé du repository
-        when(equipeRepository.save(any(Equipe.class))).thenReturn(equipeSimulee);
+        Equipe addedEquipe = equipeService.addEquipe(equipeToAdd);
 
-        // Appelez la méthode de service à tester
-        Equipe equipeAjoutee = equipeService.addEquipe(equipeSimulee);
-
-        // Vérifiez le résultat avec des assertions
-        assertNotNull(equipeAjoutee);
-        assertEquals(equipeSimulee.getIdEquipe(), equipeAjoutee.getIdEquipe());
-        assertEquals(equipeSimulee.getNomEquipe(), equipeAjoutee.getNomEquipe());
-
-        // Effectuez d'autres assertions selon le comportement attendu
+        assertEquals(equipeToAdd, addedEquipe);
     }
 
     @Test
     public void testUpdateEquipe() {
-        // Créez une équipe simulée avec des propriétés modifiées
-        Equipe equipeSimulee = new Equipe(1, "Equipe Modifiée", Niveau.SENIOR);
+        Equipe equipeToUpdate = new Equipe(1, "Equipe existante", Niveau.JUNIOR);
+        when(equipeRepository.save(equipeToUpdate)).thenReturn(equipeToUpdate);
 
-        // Configurez le comportement simulé du repository
-        when(equipeRepository.save(any(Equipe.class))).thenReturn(equipeSimulee);
+        Equipe updatedEquipe = equipeService.updateEquipe(equipeToUpdate);
 
-        // Appelez la méthode de service à tester
-        Equipe equipeModifiee = equipeService.updateEquipe(equipeSimulee);
+        assertEquals(equipeToUpdate, updatedEquipe);
+    }
 
-        // Vérifiez le résultat avec des assertions
-        assertNotNull(equipeModifiee);
-        assertEquals(equipeSimulee.getIdEquipe(), equipeModifiee.getIdEquipe());
-        assertEquals(equipeSimulee.getNomEquipe(), equipeModifiee.getNomEquipe());
-        assertEquals(equipeSimulee.getNiveau(), equipeModifiee.getNiveau());
+    @Test
+    public void testRetrieveEquipe() {
+        Equipe equipeToRetrieve = new Equipe(1, "Equipe existante", Niveau.JUNIOR);
+        when(equipeRepository.findById(1)).thenReturn(java.util.Optional.of(equipeToRetrieve));
 
-        // Effectuez d'autres assertions selon le comportement attendu
+        Equipe retrievedEquipe = equipeService.retrieveEquipe(1);
+
+        assertEquals(equipeToRetrieve, retrievedEquipe);
     }
 
     @Test
     public void testDeleteEquipe() {
-        // Créez une équipe simulée
-        Equipe equipeSimulee = new Equipe(1, "Equipe à Supprimer", Niveau.JUNIOR);
+        Equipe equipeToDelete = new Equipe(1, "Equipe existante", Niveau.JUNIOR);
+        when(equipeRepository.findById(1)).thenReturn(java.util.Optional.of(equipeToDelete));
 
-        // Configurez le comportement simulé du repository pour renvoyer l'équipe simulée lors de la recherche
-        when(equipeRepository.findById(eq(1))).thenReturn(java.util.Optional.of(equipeSimulee));
-
-        // Appelez la méthode de service à tester
         equipeService.deleteEquipe(1);
 
-        // Vérifiez que la méthode delete a été appelée avec l'équipe simulée
-        verify(equipeRepository, times(1)).delete(equipeSimulee);
-
-        // Effectuez d'autres assertions selon le comportement attendu
+        verify(equipeRepository).delete(equipeToDelete);
     }
-    // Écrivez d'autres méthodes de test pour les autres fonctionnalités
 }
