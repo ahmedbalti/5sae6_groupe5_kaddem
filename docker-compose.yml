@@ -1,51 +1,37 @@
-version: "3.9"
+version: "3.7"
 services:
-
-  kaddem:
-    container_name: kaddem
-    image: "kaddem"
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+  app:
+    build: ./
+    restart: always
+    image: app
     ports:
-      - "8089:8089"
+      - 8060:8060
+    networks:
+      - mynetwork
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/kaddem_db?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD:
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/kaddem?useSSL=false",
+        "spring.datasource.username" : "root",
+        "spring.datasource.password" : "",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.hibernate.ddl-auto" : "update"}'
     depends_on:
-      - mysql-container
+      - mysqldb
     volumes:
-      - kaddem-data:/kaddem-data
-    networks:
-      - spring-network
+      - .m2:/root/.m2
 
-
-
-  mysql-container:
-    image: "mysql:5.6"
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: kaddem_db
+  mysqldb:
+    image: "mysql:5.7"
+    restart: always
     ports:
-      - "3306:3306"
-    restart: unless-stopped
-    volumes:
-      - mysql_data:/opt/mysql/data
-      - mysql_extenstions:/opt/mysql/extensions
-      - mysql_logs:/mysql/logs
+      - 3307:3306
     networks:
-      - spring-network
+      - mynetwork
+    environment:
+      - MYSQL_DATABASE=kaddem
+      - MYSQL_ALLOW_EMPTY_PASSWORD
+      - MYSQL_ROOT_PASSWORD=
 
 networks:
-  spring-network:
-volumes:
-  kaddem-data:
-  mysql_data:
-  mysql_extenstions:
-  mysql_logs:
-
+  mynetwork:
+    driver: bridge
