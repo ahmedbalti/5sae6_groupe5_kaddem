@@ -32,6 +32,15 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD
       - MYSQL_ROOT_PASSWORD=
 
+
+  app_test:
+    build: ./
+    command: [ "./mvnw", "test" ]
+    networks:
+      - mynetwork
+    depends_on:
+      - mysqldb
+
 networks:
   mynetwork:
     driver: bridge
