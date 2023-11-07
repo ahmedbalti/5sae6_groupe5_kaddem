@@ -5,7 +5,7 @@ services:
     restart: always
     image: app
     ports:
-      - 8060:8060
+      - 8089:8089
     networks:
       - mynetwork
     environment:
@@ -24,7 +24,7 @@ services:
     image: "mysql:5.7"
     restart: always
     ports:
-      - 3307:3306
+      - 3306:3306
     networks:
       - mynetwork
     environment:
