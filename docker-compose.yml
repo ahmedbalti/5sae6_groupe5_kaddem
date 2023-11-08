@@ -22,7 +22,7 @@ services:
 
 
   spring-application:
-    image: ikrambargaoui/5sae6-g5-kaddem
+    image: ikrambargaoui/kaddem
     restart: on-failure
     ports:
       - "8089:8089"
