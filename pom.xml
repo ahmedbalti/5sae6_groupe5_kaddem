@@ -28,8 +28,8 @@
     <distributionManagement>
         <repository>
             <id>deploymentRepo</id>
-            <name>Nexus Repository</name>
-            <url>http://localhost:8081/repository/maven-releases/</url>
+            <name>5sae6_groupe5_kaddem</name>
+            <url>http://localhost:8081/repository/5sae6_groupe5_kaddem/</url>
         </repository>
     </distributionManagement>
 
