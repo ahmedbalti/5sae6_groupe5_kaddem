@@ -18,6 +18,7 @@ public class EtudiantServiceTest {
     @Mock
     private EtudiantRepository etudiantRepository;
 
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
